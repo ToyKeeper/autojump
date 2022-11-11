@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
   Copyright © 2008-2012 Joel Schaerer
@@ -65,7 +65,7 @@ from autojump_utils import sanitize
 from autojump_utils import take
 from autojump_utils import unico
 
-VERSION = '22.5.3'
+VERSION = '22.5.3-tk1'
 FUZZY_MATCH_THRESHOLD = 0.6
 TAB_ENTRIES_COUNT = 9
 TAB_SEPARATOR = '__'
@@ -75,9 +75,14 @@ def set_defaults():
     config = {}
 
     if is_osx():
-        data_home = os.path.join(os.path.expanduser('~'), 'Library')
+        data_home = os.path.join(
+            os.path.expanduser('~'),
+            'Library',
+            'autojump')
     elif is_windows():
-        data_home = os.getenv('APPDATA')
+        data_home = os.path.join(
+            os.getenv('APPDATA'),
+            'autojump')
     else:
         data_home = os.getenv(
             'XDG_DATA_HOME',
@@ -85,10 +90,10 @@ def set_defaults():
                 os.path.expanduser('~'),
                 '.local',
                 'share',
-            ),
-        )
-    config['data_path'] = os.path.join(data_home, 'autojump', 'autojump.txt')
-    config['backup_path'] = os.path.join(data_home, 'autojump', 'autojump.txt.bak')
+                'autojump'))
+
+    config['data_path'] = os.path.join(data_home, 'autojump.txt')
+    config['backup_path'] = os.path.join(data_home, 'autojump.txt.bak')
 
     return config
 
@@ -188,20 +193,19 @@ def find_matches(entries, needles, check_entries=True):
     else:
         path_exists = lambda _: True
 
-    data = sorted(
-        entries,
-        key=attrgetter('weight', 'path'),
-        reverse=True,
-    )
+    foo = [(-e.weight, -len(e.path), e.path, e) for e in entries]
+    foo.sort()
+    data = [f[-1] for f in foo]
 
     return ifilter(
         lambda entry: not is_cwd(entry) and path_exists(entry),
         chain(
-            match_consecutive(needles, data, ignore_case),
-            match_fuzzy(needles, data, ignore_case),
             match_anywhere(needles, data, ignore_case),
-        ),
-    )
+            match_consecutive(needles, data, ignore_case),
+            # want to go to a random place instead of the one you requested?
+            # I don't.
+            #match_fuzzy(needles, data, ignore_case),
+            ))
 
 
 def handle_tab_completion(needle, entries):
