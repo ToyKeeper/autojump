@@ -3,7 +3,7 @@ NAME
 
 autojump - a faster way to navigate your filesystem
 
-(ToyKeeper's lightly modded version)
+(ToyKeeper's lightly modded version, details below)
 
 DESCRIPTION
 -----------
@@ -170,7 +170,23 @@ For any questions or issues please visit:
 CHANGES FROM UPSTREAM
 ---------------------
 
-* (TBD)
+Compared to wting's last version (from 2018), a few things have been changed:
+
+* Made scores/weights decay over time so more recently-used paths match first.
+  Now if you used a directory once 5 years ago, it won't compete with a
+  similarly-named path you used 5 minutes ago.  But an old dir you used many
+  times will still beat a new dir you've only used once.
+* No longer jumps to fuzzy matches when an exact match exists.  Fuzzy matches
+  are disabled entirely, because they go to strange and unpredictable places.
+* Match uncommon mid-path strings more easily.  Very handy when you have
+  `/foo/bar/baz/devbranch/my/user/` and `/foo/bar/baz/stable/my/user/` and want
+  to jump between the two `my/user/` directories with `j dev` and `j stab`.
+* Prioritizes longer paths when there's a tie, because short paths don't need
+  shortcuts as much.
+* Uses python3 by default.  Python2 was replaced in 2008 and discontinued in
+  2020.
+* Fixed bug: Would fail to find current path in database when path contained a
+  symlink.
 
 AUTHORS
 -------
