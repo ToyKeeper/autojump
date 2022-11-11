@@ -261,9 +261,16 @@ def print_stats(data, data_path):
     print('%d:\t number of entries' % len(data))
 
     try:
+        try:
+            # shell env doesn't resolve symlinks, which is good
+            # but not always available
+            cwd = os.getenv('PWD')
+        except:
+            # getcwd() always gives canonical non-symlinked path,
+            # which is frequently undesirable
+            cwd = os.getcwd()
         print_local(
-            '%.2f:\t current directory weight' % data.get(os.getcwdu(), 0),
-        )
+            "%.2f:\t current directory weight" % data.get(cwd, 0))
     except OSError:
         # current directory no longer exists
         pass
