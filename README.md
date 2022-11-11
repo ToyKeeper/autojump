@@ -3,6 +3,8 @@ NAME
 
 autojump - a faster way to navigate your filesystem
 
+(ToyKeeper's lightly modded version)
+
 DESCRIPTION
 -----------
 
@@ -11,6 +13,10 @@ maintaining a database of the directories you use the most from the
 command line.
 
 *Directories must be visited first before they can be jumped to.*
+
+The original author (wting) seems to have abandoned autojump sometime in 2018,
+so this is ToyKeeper's lightly modified version.  Changes are summarized in a
+later section of this readme.
 
 USAGE
 -----
@@ -159,6 +165,12 @@ REPORTING BUGS
 For any questions or issues please visit:
 
     https://github.com/wting/autojump/issues
+    (or not ... wting abandoned the project in 2018)
+
+CHANGES FROM UPSTREAM
+---------------------
+
+* (TBD)
 
 AUTHORS
 -------
