@@ -131,6 +131,8 @@ def save(config, data):
 
         with open(temp.name, 'w', encoding='utf-8', errors='replace') as f:
             for path, weight in data.items():
+                # decay weights over time
+                weight = weight * 0.999
                 f.write(unico('%s\t%s\n' % (weight, path)))
 
             f.flush()
